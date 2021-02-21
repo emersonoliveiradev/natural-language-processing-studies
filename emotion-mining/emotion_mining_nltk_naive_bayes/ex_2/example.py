@@ -1,29 +1,7 @@
 import nltk
-# nltk.download('stopwords')
-# nltk.download('rslp')
-
-base = [("eu sou admirada por muitos", "alegria"),
-        ("me sinto completamente amado", "alegria"),
-        ("amar e maravilhoso", "alegria"),
-        ("estou me sentindo muito animado novamente", "alegria"),
-        ("eu estou muito bem hoje", "alegria"),
-        ("que belo dia para dirigir um carro novo", "alegria"),
-        ("o dia est� muito bonito", "alegria"),
-        ("estou contente com o resultado do teste que fiz no dia de ontem",
-         "alegria"),
-        ("o amor e lindo", "alegria"),
-        ("nossa amizade e amor vai durar para sempre", "alegria"),
-        ("estou amedrontado", "medo"),
-        ("ele esta me ameacando a dias", "medo"),
-        ("isso me deixa apavorada", "medo"),
-        ("este lugar e apavorante", "medo"),
-        ("""se perdermos outro jogo seremos
-         eliminados e isso me deixa com pavor""", "medo"),
-        ("tome cuidado com o lobisomem", "medo"),
-        ("se eles descobrirem estamos encrencados", "medo"),
-        ("estou tremendo de medo", "medo"),
-        ("eu tenho muito medo dele", "medo"),
-        ("estou com medo do resultado dos meus testes", "medo")]
+from nltk.metrics import ConfusionMatrix
+# nltk.download("stopwords")
+# nltk.download("rslp")
 
 
 training_base = [
@@ -216,20 +194,27 @@ training_base = [
     ("que criança mal educada", "desgosto"),
     ("estou indisposta te dar o divorcio", "desgosto"),
     ("tão patetico, não tem nada mais rude para dizer?", "desgosto"),
-    ("por motivo torpe, com emprego de meio cruel e com impossibilidade de defesa para a vítima", "desgosto"),
+    ("""por motivo torpe, com emprego de meio cruel e com impossibilidade de
+     defesa para a vítima""", "desgosto"),
     ("a inveja e tão vil e vergonhosa que ninguem se atreve a confessá-la",
      "desgosto"),
-    ("o miserável receio de ser sentimental e o mais vil de todos os receios modernos", "desgosto"),
-    ("travesso gato quando fica com saudades do dono mija no sapato", "desgosto"),
+    ("""o miserável receio de ser sentimental e o mais vil de todos os receios
+     modernos""", "desgosto"),
+    ("""travesso gato quando fica com saudades do dono mija no sapato""",
+     "desgosto"),
     ("isso e um ato detestável e covarde", "desgosto"),
     ("revelam apenas o que e destrutivo e detestável para o povo", "desgosto"),
-    ("não sei como e a vida de um patife, mais a de um homem honesto e abominável", "desgosto"),
-    ("há coisas que temos que suportar para não acharmos a vida insuportável", "desgosto"),
+    ("""não sei como e a vida de um patife, mais a de um homem honesto e
+     abominável""", "desgosto"),
+    ("""há coisas que temos que suportar para não acharmos a vida
+     insuportável""", "desgosto"),
     ("as injurias do tempo e as injustiças do homem", "desgosto"),
     ("odioso e desumano", "desgosto"),
-    ("você não publicará conteúdo odiento, pornográfico ou ameaçador", "desgosto"),
+    ("""você não publicará conteúdo odiento, pornográfico ou ameaçador""",
+     "desgosto"),
     ("rancoroso e reprimido", "desgosto"),
-    ("não há animal mais degradante, estúpido, covarde, lamentável, egoísta, rancoroso e invejoso do que o homem", "desgosto"),
+    ("""não há animal mais degradante, estúpido, covarde, lamentável, egoísta,
+     rancoroso e invejoso do que o homem""", "desgosto"),
     ("o virulento debate ente políticos", "desgosto"),
 
     ("eu imploro, não me matem!", "medo"),
@@ -313,7 +298,8 @@ training_base = [
     ("afugente os cães", "medo"),
     ("estou chocado e amedrontado com este assassinato brutal", "medo"),
     ("e preciso afugenta com ímpeto este medo do inferno", "medo"),
-    ("seu políticos usam suas forças para afugentar e amedrontar o povo", "medo"),
+    ("""seu políticos usam suas forças para afugentar e amedrontar o povo""",
+     "medo"),
     ("o objetivo disso e apenas me amedrontar mais", "medo"),
     ("isso me apavora", "medo"),
 
@@ -476,7 +462,8 @@ training_base = [
     ("essa expectativa esta me matando", "surpresa"),
     ("vou caminhar sempre na expectativa de encontrá-lo", "surpresa"),
     ("você emudece minhas palavras", "surpresa"),
-    ("minhas palavras vão emudecer se não parar de me surpreender", "surpresa"),
+    ("""minhas palavras vão emudecer se não parar de me surpreender""",
+     "surpresa"),
     ("a mulher e um efeito deslumbrante da natureza", "surpresa"),
     ("estou deslumbrada com essas jóias", "surpresa"),
     ("isso e romântico e deslumbrante", "surpresa"),
@@ -569,17 +556,270 @@ training_base = [
     ("e uma desonra para o pais", "tristeza"),
     ("a preocupação deveria nos levar a ação não a depressão", "tristeza"),
     ("passamos ao desalento e a loucura", "tristeza"),
-    ("aquele que nunca viu a tristeza nunca reconhecerá a alegria", "tristeza"),
+    ("""aquele que nunca viu a tristeza nunca reconhecerá a alegria""",
+     "tristeza"),
     ("cuidado com a tristeza ela e um vicio", "tristeza")]
 
+test_base = [("não precisei pagar o ingresso", "alegria"),
+             ("se eu ajeitar tudo fica bem", "alegria"),
+             ("minha fortuna ultrapassa a sua", "alegria"),
+             ("sou muito afortunado", "alegria"),
+             ("e benefico para todos esta nova medida", "alegria"),
+             ("ficou lindo", "alegria"),
+             ("achei esse sapato muito simpático", "alegria"),
+             ("estou ansiosa pela sua chegada", "alegria"),
+             ("congratulações pelo seu aniversário", "alegria"),
+             ("delicadamente ele a colocou para dormir", "alegria"),
+             ("a musica e linda", "alegria"),
+             ("sem musica eu não vivo", "alegria"),
+             ("conclui uma tarefa muito difícil", "alegria"),
+             ("conclui minha graduação", "alegria"),
+             ("estou muito contente com tudo", "alegria"),
+             ("eu confio em você", "alegria"),
+             ("e um prazer conhecê-lo", "alegria"),
+             ("o coleguismo de vocês e animador", "alegria"),
+             ("estou aproveitando as ferias", "alegria"),
+             ("vamos aproveitar as ferias", "alegria"),
+             ("e muito divertido este jogo", "alegria"),
+             ("vamos ter muita diversão", "alegria"),
+             ("não achei que me divertiria tanto assim", "alegria"),
+             ("vou consentir o orçamento ao cliente", "alegria"),
+             ("""com o consentimento dos meus pais podemos nos casar""",
+              "alegria"),
+             ("eu adorei este perfume", "alegria"),
+             ("sua bondade e cativante", "alegria"),
+             ("estou despreocupada", "alegria"),
+             ("não me preocupo com o que aconteceu", "alegria"),
+             ("me sinto completamente segura", "alegria"),
+             ("estimo muito o seu trabalho", "alegria"),
+             ("somos estimados por nossa família", "alegria"),
+             ("concretizamos nossa ideia", "alegria"),
+             ("nosso ideal foi alcançado", "alegria"),
+             ("estamos muito felizes juntos", "alegria"),
+             ("""estou tão animada com os preparativos para o casamento""",
+              "alegria"),
+             ("você será muito amado meu filho", "alegria"),
+             ("os apaixonados são maravilhosos", "alegria"),
+             ("agradeço imensamente o seu apoio nestes dias", "alegria"),
+             ("esta comida me parece muito atraente", "alegria"),
+             ("você me completa", "alegria"),
+             ("poderemos completar o projeto hoje!", "alegria"),
+             ("estamos namorando", "alegria"),
+             ("estou namorando este vestido a um tempo", "alegria"),
+             ("pude comprar meu celular hoje", "alegria"),
+             ("e um deleite poder compartilhar minhas vitórias", "alegria"),
+             ("ela e um boa garota", "alegria"),
+             ("estivemos em um ótimo show", "alegria"),
 
-stop_words_manually = ['a', 'agora', 'algum', 'alguma', 'aquele', 'aqueles',
-                       'de', 'deu', 'do', 'e', 'estou', 'esta', 'esta', 'ir',
-                       'meu', 'muito', 'mesmo', 'no', 'nossa', 'o', 'outro',
-                       'para', 'que', 'sem', 'talvez', 'tem', 'tendo', 'tenha',
-                       'teve', 'tive', 'todo', 'um', 'uma', 'umas', 'uns',
-                       'vou']
-stop_words_nltk = nltk.corpus.stopwords.words('portuguese')
+             ("o mundo e feio como o pecado", "desgosto"),
+             ("""a coisa mais difícil de esconder e aquilo que não existe""",
+              "desgosto"),
+             ("você errou feio aquele gol", "desgosto"),
+             ("nunca vou me casar sou muito feia", "desgosto"),
+             ("""os golpes da adversidade são terrivelmente amargos""",
+              "desgosto"),
+             ("os homem ficam terrivelmente chatos", "desgosto"),
+             ("abominavelmente convencido", "desgosto"),
+             ("terrivelmente irritado", "desgosto"),
+             ("""as instituições publicas estão terrivelmente decadentes""",
+              "desgosto"),
+             ("a população viveu em isolamento por muito tempo", "desgosto"),
+             ("estou terrivelmente preocupada", "desgosto"),
+             ("o nacionalismo e uma doença infantil", "desgosto"),
+             ("se me es antipático a minha negação esta pronta", "desgosto"),
+             ("muitos documentários sobre esse casal antipático", "desgosto"),
+             ("sua beleza não desfaça sua antipatia", "desgosto"),
+             ("esta e uma experiência desagradável", "desgosto"),
+             ("desagradável estrago nos banheiros", "desgosto"),
+             ("""o mais irritante no amor e que se trata de um crime que
+              precisa de um cúmplice""", "desgosto"),
+             ("a situação nos causa grande incomodo", "desgosto"),
+             ("estou preocupado com o incomodo na garganta", "desgosto"),
+             ("simplesmente não quero amolação da policia", "desgosto"),
+             ("você e uma criaturinha muito impertinente", "desgosto"),
+             ("o peso e a dor da vida", "desgosto"),
+             ("me arrependo amargamente de minhas ações", "desgosto"),
+             ("""o destino e cruel e os homens não são dignos de compaixão""",
+              "desgosto"),
+             ("o ódio conduz ao isolamento cruel e ao desespero", "desgosto"),
+             ("""encerrou com o massacre mais repudiável e asqueroso que se
+              conhece""", "desgosto"),
+             ("de mal gosto e asqueroso", "desgosto"),
+             ("tudo e inserto neste mundo hediondo", "desgosto"),
+             ("o crime de corrupção e um crime hediondo", "desgosto"),
+             ("o rio esta fetido e de cor escura", "desgosto"),
+             ("muito lixo no rio o deixa malcheiroso", "desgosto"),
+             ("""existe uma laranja podre no grupo e já desconfiamos quem e""",
+              "desgosto"),
+             ("""foi de repente estou machucado e me sentindo enjoado""",
+              "desgosto"),
+             ("eu fiquei enojado", "desgosto"),
+             ("""daqui alguns meses vou embora deste pais que já estou
+              nauseado""", "desgosto"),
+
+             ("que abominável esse montro!", "medo"),
+             ("vamos alarmar a todos sobre a situação", "medo"),
+             ("estou amedrontada", "medo"),
+             ("estou com muito medo da noite", "medo"),
+             ("ele esta me ameaçando a dias", "medo"),
+             ("quanta angustia", "medo"),
+             ("estou angustiada", "medo"),
+             ("angustiadamente vou sair e casa", "medo"),
+             ("isso me deixa apavorada", "medo"),
+             ("você esta me apavorando", "medo"),
+             ("estou desconfiada de você", "medo"),
+             ("não confio em você", "medo"),
+             ("ate o cachorro está apavorado", "medo"),
+             ("estou assustado com as ações do meu colega", "medo"),
+             ("agora se sente humilhado, apavorado", "medo"),
+             ("assustou a população e provocou mortes", "medo"),
+             ("""estou com dificuldades para respirar e muito assustado""",
+              "medo"),
+             ("os policiais se assustaram quando o carro capotou", "medo"),
+             ("o trabalhador e assombrado pelo temor do desemprego", "medo"),
+             ("este lugar e mal assombrado", "medo"),
+             ("estou assombrado pela crise financeira", "medo"),
+             ("mesmo aterrorizado lembro de você", "medo"),
+             ("aterrorizado e suando frio", "medo"),
+             ("""um grupo de elefantes selvagens tem aterrorizado vilas""",
+              "medo"),
+             ("me sinto intimidada pela sua presença", "medo"),
+             ("tenho medo de ser advertida novamente", "medo"),
+             ("estou correndo o risco de ser advertido", "medo"),
+             ("estou correndo riscos de saúde", "medo"),
+             ("os riscos são reais", "medo"),
+             ("podemos perder muito dinheiro com essa investida", "medo"),
+             ("socorro, fui intimado a depor", "medo"),
+             ("""fui notificado e estou com medo de perde a guarda da minha
+              filha""", "medo"),
+             ("estou angustiada com meus filhos na rua", "medo"),
+             ("e abominável o que fazem com os animais", "medo"),
+             ("foi terrível o tigre quase o matou", "medo"),
+             ("me advertiram sobre isso", "medo"),
+
+             ("ate que enfim, não agüentava mais te esperar", "raiva"),
+             ("eu quero meu dinheiro de volta agora!", "raiva"),
+             ("eu odeio a escola!", "raiva"),
+             ("vou fazer picadinho de você", "raiva"),
+             ("detesto trabalhar no verão", "raiva"),
+             ("quero minha comida, e quero agora!", "raiva"),
+             ("melhor você recolher minhas compras agora!", "raiva"),
+             ("quero descer agora sua maluca", "raiva"),
+             ("vou reclamar com o gerente!", "raiva"),
+             ("vai engolir o que disse!", "raiva"),
+             ("ele me ridiculariza diante de todos", "raiva"),
+             ("não quero mais saber de você", "raiva"),
+             ("vejo você na cadeia safado!", "raiva"),
+             ("agora vou ter que pagar mais isso ainda!", "raiva"),
+             ("saia logo do banheiro!", "raiva"),
+             ("suba já para o seu quarto!", "raiva"),
+             ("eu falei para calar a boca seu idiota!", "raiva"),
+             ("eu disse para você cair fora!", "raiva"),
+             ("não agüento mais que fiquem me culpando sem motivo!", "raiva"),
+             ("não suporto olhar na sua cara!", "raiva"),
+             ("eu não sou um elefante", "raiva"),
+             ("juro que se olhar pra mim eu o mato!", "raiva"),
+             ("chega, não quero saber mais deste assunto", "raiva"),
+             ("como pode ser tão burro?", "raiva"),
+             ("não me aborreça seu moleque", "raiva"),
+             ("não quero me aborrecer com estas bobagens", "raiva"),
+             ("ele me agrediu!", "raiva"),
+             ("eu amaldiçôo você e a sua família", "raiva"),
+             ("não me amole", "raiva"),
+             ("não venha me amolar", "raiva"),
+             ("isso tudo e uma tormenta", "raiva"),
+             ("eu vou matar você", "raiva"),
+             ("para que simplificar se você pode sempre complicar", "raiva"),
+             ("isso esta me enlouquecendo", "raiva"),
+             ("estou furiosa com você", "raiva"),
+             ("isso mesmo fique furioso", "raiva"),
+
+             ("esses livros são magníficos", "surpresa"),
+             ("esse vinho e magnífico", "surpresa"),
+             ("seria magnífico ver o esperaculo", "surpresa"),
+             ("o casamento foi estupendo", "surpresa"),
+             ("e um jogador bárbaro estupendo", "surpresa"),
+             ("esse dia esta excelente", "surpresa"),
+             ("o cantor estava excelente", "surpresa"),
+             ("o universo e assombroso", "surpresa"),
+             ("o amor e sublime", "surpresa"),
+             ("sua sublime atuação", "surpresa"),
+             ("e formidável meu caro walter", "surpresa"),
+             ("como e formidável a presença de todos", "surpresa"),
+             ("e formidável ter a quem dizer adeus", "surpresa"),
+             ("e um conselheiro formidável o seu", "surpresa"),
+             ("o artigo foi formidável", "surpresa"),
+             ("pica pau e um destaque no imaginário brasileiro", "surpresa"),
+             ("ah! o absoluto do imaginário", "surpresa"),
+             ("isso foi surreal", "surpresa"),
+             ("uma historia completamente surreal", "surpresa"),
+             ("essas pinturas beiram o surreal", "surpresa"),
+             ("você nem acreditam de tão surreal", "surpresa"),
+             ("incrível!", "surpresa"),
+             ("fiquei pasma com tudo isso", "surpresa"),
+             ("você me deixa pasmo", "surpresa"),
+             ("estou admirado com a sua astucia", "surpresa"),
+             ("que bela surpresa você me fez", "surpresa"),
+             ("não acredito que fez isso!", "surpresa"),
+             ("isso foi apavorante", "surpresa"),
+             ("isso tão de repente", "surpresa"),
+             ("estou chocada com isso", "surpresa"),
+             ("estou surpresa e desconsertada", "surpresa"),
+             ("esta realmente deslumbrante querida", "surpresa"),
+             ("fiquei completamente sem plavras", "surpresa"),
+             ("e espantoso o modo como ele nos olha", "surpresa"),
+             ("incrivel você estar aqui", "surpresa"),
+             ("que fantástica festa minha querida", "surpresa"),
+
+             ("isso tudo e um erro", "tristeza"),
+             ("eu sou errada eu sou errante", "tristeza"),
+             ("tenho muito dó do cachorro", "tristeza"),
+             ("e dolorida a perda de um filho", "tristeza"),
+             ("essa tragedia vai nos abalar para sempre", "tristeza"),
+             ("perdi meus filhos", "tristeza"),
+             ("perdi meu curso", "tristeza"),
+             ("sou só uma chorona", "tristeza"),
+             ("você e um chorão", "tristeza"),
+             ("se arrependimento matasse", "tristeza"),
+             ("me sinto deslocado em sala de aula", "tristeza"),
+             ("foi uma passagem fúnebre", "tristeza"),
+             ("nossa condolências e tristeza a sua perda", "tristeza"),
+             ("desanimo, raiva, solidão ou vazies, depressão", "tristeza"),
+             ("vivo te desanimando", "tristeza"),
+             ("estou desanimado", "tristeza"),
+             ("imperador sanguinário, depravado e temeroso", "tristeza"),
+             ("meu ser esta em agonia", "tristeza"),
+             ("este atrito entre nos tem que acabar", "tristeza"),
+             ("a escuridão desola meu ser", "tristeza"),
+             ("sua falsa preocupação", "tristeza"),
+             ("sua falsidade me entristece", "tristeza"),
+             ("""quem esta descontente com os outros esta descontente consigo
+              próprio""", "tristeza"),
+             ("""a torcida esta descontente com a demissão do tecnico""",
+              "tristeza"),
+             ("estou bastante aborrecido com o jornal", "tristeza"),
+             ("me sinto solitário e entediado", "tristeza"),
+             ("""a vida e solitária para aqueles que não são falsos""",
+              "tristeza"),
+             ("como com compulsão depois da depressão", "tristeza"),
+             ("estou me desencorajando a viver", "tristeza"),
+             ("ele desencoraja minhas vontades", "tristeza"),
+             ("isso vai deprimindo por dentro", "tristeza"),
+             ("acho que isso e defeituoso", "tristeza"),
+             ("os remedios me derrubam na cama", "tristeza"),
+             ("a depressão vai me derrubar", "tristeza"),
+             ("suas desculpas são falsas", "tristeza"),
+             ("não magoe as pessoas", "tristeza")]
+
+unique_words = []
+
+stop_words_manually = ["a", "agora", "algum", "alguma", "aquele", "aqueles",
+                       "de", "deu", "do", "e", "estou", "esta", "esta", "ir",
+                       "meu", "muito", "mesmo", "no", "nossa", "o", "outro",
+                       "para", "que", "sem", "talvez", "tem", "tendo", "tenha",
+                       "teve", "tive", "todo", "um", "uma", "umas", "uns",
+                       "vou"]
+stop_words_nltk = nltk.corpus.stopwords.words("portuguese")
 
 
 def remove_stop_words(text):
@@ -626,7 +866,7 @@ def stemmer_apply(text):
 
 def search_words(text):
     """
-        Responsável por burcar todas as palavras presentes na lista ignorando
+        Responsável por buscar todas as palavras presentes na lista ignorando
         as classes
 
         :param text: Base de dados de texto e classes correspondentes
@@ -656,7 +896,8 @@ def search_frequency(words):
 
 def search_unique_words(words_frequency):
     """
-        Responsável por uma lista de palavras sem repetição
+        Responsável por retornar uma lista contendo apenas palavras sem
+        repetição
 
         :param words_frequency: Lista de palavras e frequência
         :type: nltk.probability.FreqDist
@@ -682,7 +923,6 @@ def words_extractor(doc):
     """
     doc = set(doc)
     features = {}
-
     for word in unique_words:
         features[str(word)] = (word in doc)
 
@@ -691,17 +931,17 @@ def words_extractor(doc):
 
 def train_classifier(base):
     """
-        Responsável por a partir de duas listas retornar um dicionário
-        contendo cada palavra e o valor booleano para sua presença
-        na outra lista.
+        Responsável por criar o modelo de treinamento a partir da base
 
-        :param doc: Lista de palavras
-        :type: list
+        :param doc: Lista com cada palavra da base e seu valor booloano para
+
+        :type: nltk.collections.LazyMap
 
         :return: Cada palavra da lista e seu correspondente booleano
-        :rtype: dict
+        :rtype: nltk.classify.naivebayes.NaiveBayesClassifier
     """
-
+    print(type(base))
+    print(base)
     return nltk.NaiveBayesClassifier.train(base)
 
 
@@ -727,30 +967,112 @@ def phrase_normalization(phrase):
     return words_extractor(phrase)
 
 
-text_without_stop_words = remove_stop_words(training_base)
-text_with_stemmer = stemmer_apply(text_without_stop_words)
-
-words = search_words(text_with_stemmer)
-words_frequency = search_frequency(words)
-# print(words_frequency.most_common(50))
-
-unique_words = search_unique_words(words_frequency)
-
-complete_base_to_classifier = nltk.classify.apply_features(
-    words_extractor,
-    text_with_stemmer)
-
-classifier = train_classifier(complete_base_to_classifier)
-# print(classifier.labels())
-# print(classifier.show_most_informative_features())
+def get_accuracy(classifier, complete_base_to_classifier_test):
+    return nltk.classify.accuracy(
+        classifier,
+        complete_base_to_classifier_test)
 
 
-test_phrase = "que desanimo"
-test_phrase = phrase_normalization(test_phrase)
-print(test_phrase)
-label_detected = classifier.classify(test_phrase)
-print(label_detected)
+def get_base_execution():
+    text_without_stop_words = remove_stop_words(training_base)
+    text_with_stemmer = stemmer_apply(text_without_stop_words)
 
-distribution = classifier.prob_classify(test_phrase)
-for label in distribution.samples():
-    print(label, " - ", distribution.prob(label))
+    words = search_words(text_with_stemmer)
+    words_frequency = search_frequency(words)
+    # print(words_frequency.most_common(50))
+
+    global unique_words
+    unique_words = search_unique_words(words_frequency)
+
+    complete_base_to_classifier = nltk.classify.apply_features(
+        words_extractor,
+        text_with_stemmer)
+
+    return train_classifier(complete_base_to_classifier)
+
+
+def get_base_test_execution():
+    text_without_stop_words_test = remove_stop_words(test_base)
+    text_with_stemmer_test = stemmer_apply(text_without_stop_words_test)
+
+    return nltk.classify.apply_features(
+        words_extractor,
+        text_with_stemmer_test)
+
+
+def get_normal_execution(phrase_to_test):
+    classifier = get_base_execution()
+    print(classifier)
+    print(type(classifier))
+    exit()
+    # print(classifier.labels())
+    # print(classifier.show_most_informative_features())
+
+    phrase_to_test = phrase_normalization(phrase_to_test)
+    # label_detected = classifier.classify(phrase_to_test)
+
+    distribution = classifier.prob_classify(phrase_to_test)
+    for label in distribution.samples():
+        print(label, " - ", distribution.prob(label))
+
+
+def get_test_execution():
+    """
+        Determinar acurácia
+    """
+    classifier = get_base_execution()
+    complete_base_to_classifier_test = get_base_test_execution()
+    return get_accuracy(classifier, complete_base_to_classifier_test)
+
+
+def get_confusion_matrix_example():
+    expected = 'alegria alegria medo surpresa medo raiva'.split()
+    foreseen = 'alegria alegria alegria surpresa alegria raiva'.split()
+    matrix = ConfusionMatrix(expected, foreseen)
+    return matrix
+
+
+def get_confusion_matrix():
+    expected = []
+    foreseen = []
+
+    classifier = get_base_execution()
+    complete_base_to_classifier_test = get_base_test_execution()
+
+    for (phrase, label) in complete_base_to_classifier_test:
+        result = classifier.classify(phrase)
+        foreseen.append(result)
+        expected.append(label)
+
+    matrix = ConfusionMatrix(expected, foreseen)
+    print(dir(matrix))
+    print(matrix._indices)
+    print(matrix._values)
+    print(matrix._confusion)
+
+    return matrix
+
+
+def get_errors():
+    classifier = get_base_execution()
+
+    complete_base_to_classifier_test = get_base_test_execution()
+
+    errors = []
+    for (phrase, label) in complete_base_to_classifier_test:
+        result = classifier.classify(phrase)
+        if result != label:
+            errors.append((label, result, phrase))
+
+    return errors
+
+
+print(get_confusion_matrix())
+
+get_normal_execution("Quanta tristeza existe no meu coração")
+
+print("Test Accuracy - " + str(get_test_execution()))
+
+print(len(get_errors()))
+
+print(get_confusion_matrix())

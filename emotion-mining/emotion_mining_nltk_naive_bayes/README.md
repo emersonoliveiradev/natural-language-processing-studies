@@ -72,6 +72,19 @@ Risco       | Histórico     | Garantia | Renda Anual
 <br/>p(Moderado) - 2/6 * 0 * 1/3 * 0 = 0.1111 / 0.8333 = 13,34%
 <br/>p(Baixo) - 3/6 * 3/3 * 0 * 0 = 0.5000 / 0.8333 = 60.00%
 
+
+<br/><br/>
+# Matriz de Confusão
+
+-           | Alto   | Moderado | Baixo
+------------|--------|----------|-------
+Alto        |  *28   |    7     | 3
+Moderado    |   6    |   *32    | 2
+Baixo       |   5    |    8     | *25  
+
+* acertos: 28 + 32 + 25 = 85
+* erros: 7 + 3 + 6 + 2 + 5 + 5
+
 <br/><br/>
 # Artigos de referência
 * Mineração de Texto: https://www.researchgate.net/publication/317912973_Mineracao_de_texto_-_Conceitos_e_aplicacoes_praticas
